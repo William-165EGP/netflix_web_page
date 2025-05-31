@@ -81,7 +81,7 @@
 
 
 <div style="margin: 1em 0;">
-  <a id="downloadChart" download>📈 下載圖表 PNG</a>
+  <a id="downloadChart" class="download-link">📈 下載圖表 PNG</a>
   <script>
     document.getElementById('downloadChart').addEventListener('click', () => {
       const img = document.querySelector('img[src^="/chart"]');
@@ -92,7 +92,7 @@
     });
   </script>
   &nbsp;|&nbsp;
-  <a href="/download/csv?plan={{ selected_plan }}&search={{ search }}" download>
+  <a href="/download/csv?plan={{ selected_plan }}&search={{ search }}" download class="download-link">
     📝 下載 {{ selected_plan }} 價格 CSV
   </a>
 
