@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    plan = request.args.get("plan", "Standard")
+    plan = request.args.get("plan", "Premium") # set premium as default
     selected_country = request.args.get("country")  # pick the country
     search = request.args.get("search", "").strip().lower()  # search keyword
 
