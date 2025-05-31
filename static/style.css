@@ -6,13 +6,13 @@ body {
 }
 
 .download-link {
-    color: #007BFF;              /* 藍色，像超連結 */
-    text-decoration: underline;  /* 加底線 */
-    cursor: pointer;             /* 滑鼠變手指 */
+    color: #007BFF;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .download-link:hover {
-    color: #0056b3;              /* 滑鼠移過去更深藍 */
+    color: #0056b3;
 }
 
 .download-link:active {
