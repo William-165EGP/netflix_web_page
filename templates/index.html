@@ -81,9 +81,34 @@
 
 
 <div style="margin: 1em 0;">
-  <a href="/chart?plan={{ selected_plan }}&search={{ search }}" download>
-    📈 下載圖表 PNG
-  </a>
+  <a id="downloadChart" href="#">📈 下載圖表 PNG</a>
+  <script>
+    document.getElementById('downloadChart').addEventListener('click', (e) => {
+      e.preventDefault(); // 防止跳頁
+
+      const img = document.querySelector('img[src^="/chart"]');
+      if (!img) {
+        alert("找不到圖表");
+        return;
+      }
+
+      fetch(img.src)
+              .then(res => res.blob())
+              .then(blob => {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'netflix_chart.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+              })
+              .catch(err => {
+                alert("下載失敗：" + err);
+              });
+    });
+  </script>
   &nbsp;|&nbsp;
   <a href="/download/csv?plan={{ selected_plan }}&search={{ search }}" download>
     📝 下載 {{ selected_plan }} 價格 CSV
