@@ -4,6 +4,7 @@ from currency import get_twd_exchange_rate
 from plot import generate_price_chart, compute_stats
 import csv
 import io
+import time
 
 app = Flask(__name__)
 
@@ -90,7 +91,8 @@ def index():
                            country_list=country_list,
                            selected_country=selected_country,
                            selected_info=selected_info,
-                           search=search)
+                           search=search,
+                           timestamp=int(time.time())
 
 
 @app.route("/download/chart")
