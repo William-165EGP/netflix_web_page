@@ -92,7 +92,7 @@ def index():
                            selected_country=selected_country,
                            selected_info=selected_info,
                            search=search,
-                           timestamp=int(time.time())
+                           timestamp=int(time.time()))
 
 
 @app.route("/download/chart")
