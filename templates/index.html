@@ -14,7 +14,7 @@
 
 <form method="get">
   <div style="overflow-x: auto; max-width: 100%;">
-    <img src="/static/price_chart.png?ts={{ timestamp }}" style="max-height: 500px;">
+    <img src="/chart?plan={{ selected_plan }}&search={{ search }}" style="max-height: 500px;">
   </div>
 
   <p>
@@ -81,7 +81,7 @@
 
 
 <div style="margin: 1em 0;">
-  <a href="/static/price_chart.png?ts={{ timestamp }}" download>
+  <a href="/chart?plan={{ selected_plan }}&search={{ search }}" download>
     📈 下載圖表 PNG
   </a>
   &nbsp;|&nbsp;

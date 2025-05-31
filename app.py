@@ -4,7 +4,6 @@ from currency import get_twd_exchange_rate
 from plot import generate_price_chart, compute_stats
 import csv
 import io
-import time
 
 app = Flask(__name__)
 
@@ -91,14 +90,37 @@ def index():
                            country_list=country_list,
                            selected_country=selected_country,
                            selected_info=selected_info,
-                           search=search,
-                           timestamp=int(time.time()))
+                           search=search)
+
+@app.route("/chart")
+def chart():
+    plan = request.args.get("plan", "Standard")
+    search = request.args.get("search", "").strip().lower()
+
+    data = get_netflix_price_data(plan)
+    twd_rates = get_twd_exchange_rate()
+
+    for item in data:
+        cur = item["currency"].lower()
+        rate = twd_rates.get(cur)
+        item["price_twd"] = round(item["price"] / rate, 2) if rate else None
 
 
-@app.route("/download/chart")
-def download_chart():
-    chart_path = "static/price_chart.png"
-    return send_file(chart_path, as_attachment=True, download_name="netflix_price_chart.png")
+    if search:
+        def match(item):
+            price = item.get("price_twd")
+            if search.startswith("<"):
+                return price and price < float(search[1:])
+            elif search.startswith(">"):
+                return price and price > float(search[1:])
+            elif search.replace('.', '', 1).isdigit():
+                return price and price == float(search)
+            return (search in item["country"].lower() or search in item["currency"].lower())
+        data = list(filter(match, data))
+
+    img_buf = generate_price_chart(data, plan)
+    return send_file(img_buf, mimetype='image/png')
+
 
 @app.route("/download/csv")
 def download_csv():

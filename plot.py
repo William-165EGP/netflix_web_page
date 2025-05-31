@@ -5,6 +5,7 @@ import matplotlib.font_manager as fm
 import os
 import numpy as np
 import statistics
+from io import BytesIO
 
 font_path = os.path.join("fonts", "NotoSansCJKtc-Regular.otf")
 font_prop = None
@@ -67,9 +68,11 @@ def generate_price_chart(data, plan="Standard", output_path="static/price_chart.
     plt.legend(prop=font_prop)
     plt.tight_layout()
 
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    plt.savefig(output_path, dpi=200)
+    buf = BytesIO()
+    plt.savefig(buf, format="png", dpi=200)
     plt.close()
+    buf.seek(0)
+    return buf
 
 def compute_stats(data):
     filtered = [d["price_twd"] for d in data if isinstance(d.get("price_twd"), (int, float))]
