@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: netflix_web_page
+    ports:
+      - "5002:5002"
+    restart: unless-stopped

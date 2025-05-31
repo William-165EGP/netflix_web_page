@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Netflix 價格比較</title>
+  <style>
+    table { border-collapse: collapse; width: 100%; margin-top: 1em; }
+    th, td { border: 1px solid #aaa; padding: 8px; text-align: left; }
+  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<h1>Netflix 價格比較（含台幣換算）</h1>
+
+<form method="get">
+  <div style="overflow-x: auto; max-width: 100%;">
+    <img src="/static/price_chart.png" style="max-height: 500px;">
+  </div>
+
+  <p>
+    <label for="plan">選擇方案：</label>
+    <select name="plan" id="plan" onchange="this.form.submit()">
+      <option value="Basic" {% if selected_plan == "Basic" %}selected{% endif %}>Basic</option>
+      <option value="Standard" {% if selected_plan == "Standard" %}selected{% endif %}>Standard</option>
+      <option value="Premium" {% if selected_plan == "Premium" %}selected{% endif %}>Premium</option>
+    </select>
+
+    &nbsp;&nbsp;
+
+    <label for="country">選擇國家：</label>
+    <select name="country" id="country" onchange="this.form.submit()">
+      <option value="">（請選擇）</option>
+      {% for c in country_list %}
+      <option value="{{ c }}" {% if selected_country == c %}selected{% endif %}>{{ c }}</option>
+      {% endfor %}
+    </select>
+
+    &nbsp;&nbsp;
+
+    <label for="search">搜尋：</label>
+    <input type="text" name="search" id="search" value="{{ search }}" placeholder="Turkey、JPY、<200">
+    <button type="submit">搜尋</button>
+  </p>
+</form>
+
+{% if selected_info %}
+<div style="border: 1px solid #ccc; padding: 10px; margin-top: 1em;">
+  <h3>{{ selected_info.country }} 的價格資訊</h3>
+  <ul>
+    <li>原幣價格：{{ selected_info.price }} {{ selected_info.currency }}</li>
+    <li>台幣換算：{{ selected_info.price_twd }} TWD</li>
+    <li>全球排名：第 {{ selected_info.rank }} / {{ selected_info.total }} 名</li>
+    <li>比 {{ "%.2f"|format(100 - selected_info.percentile) }}% 的國家便宜</li>
+  </ul>
+</div>
+{% endif %}
+
+{% if stats %}
+<h2>{{ selected_plan }} 方案統計資訊</h2>
+<table style="width: auto; border: 1px solid #ccc; margin-bottom: 1em;">
+  <thead>
+  <tr>
+    <th>資料數</th>
+    <th>平均價格（TWD）</th>
+    <th>標準差</th>
+    <th>最低</th>
+    <th>最高</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>{{ stats.count }}</td>
+    <td>{{ stats.avg }}</td>
+    <td>{{ stats.stdev }}</td>
+    <td>{{ stats.min }}</td>
+    <td>{{ stats.max }}</td>
+  </tr>
+  </tbody>
+</table>
+{% endif %}
+
+
+<div style="margin: 1em 0;">
+  <a href="/download/chart" download>
+    下載圖表 PNG
+  </a>
+  &nbsp;|&nbsp;
+  <a href="/download/csv?plan={{ selected_plan }}&search={{ search }}" download>
+    📄 下載 {{ selected_plan }} 價格 CSV
+  </a>
+
+</div>
+
+
+<table>
+  <thead>
+  <tr>
+    <th>國家</th>
+    <th>幣別</th>
+    <th>原幣價格</th>
+    <th>台幣價格</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for item in countries %}
+  <tr>
+    <td>{{ item.country }}</td>
+    <td>{{ item.currency }}</td>
+    <td>{{ item.price }}</td>
+    <td>{{ item.price_twd if item.price_twd else 'N/A' }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</body>
+</html>
