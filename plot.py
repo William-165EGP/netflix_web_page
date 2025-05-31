@@ -25,6 +25,9 @@ def generate_price_chart(data, plan="Standard", output_path="static/price_chart.
     if not filtered:
         return
 
+    if os.path.exists(output_path):
+        os.remove(output_path)
+
     sorted_data = sorted(filtered, key=lambda x: x["price_twd"])
     prices = [d["price_twd"] for d in sorted_data]
     countries = [d["country"] for d in sorted_data]
