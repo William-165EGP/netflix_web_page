@@ -109,10 +109,16 @@ def chart():
     if search:
         def match(item):
             price = item.get("price_twd")
-            if search.startswith("<"):
+            if search.startswith(">="):
+                return price and price >= float(search[2:])
+            elif search.startswith("<="):
+                return price and price <= float(search[2:])
+            elif search.startswith("<"):
                 return price and price < float(search[1:])
             elif search.startswith(">"):
                 return price and price > float(search[1:])
+            elif search.startswith("="):
+                return price and price == float(search[1:])
             elif search.replace('.', '', 1).isdigit():
                 return price and price == float(search)
             return (search in item["country"].lower() or search in item["currency"].lower())
