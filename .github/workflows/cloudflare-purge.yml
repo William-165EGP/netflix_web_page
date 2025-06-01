@@ -14,7 +14,7 @@ jobs:
       - name: Purge cache from Cloudflare by URL prefix
         uses: nathanvaughn/actions-cloudflare-purge@master
         with:
-          zone: ${{ secrets.CLOUDFLARE_ZONE_ID }}
-          token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cf_zone: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          cf_auth: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           prefixes: |
             ${{ secrets.CF_PURGE_PREFIX }}
