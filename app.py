@@ -57,10 +57,6 @@ def index():
 
     data.sort(key=lambda x: (x["price_twd"] is None, x["price_twd"]))
 
-
-    generate_price_chart(data, plan)
-
-
     country_list = sorted({d["country"] for d in data})
 
 
