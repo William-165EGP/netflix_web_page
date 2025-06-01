@@ -16,5 +16,3 @@ jobs:
         with:
           cf_zone: ${{ secrets.CLOUDFLARE_ZONE_ID }}
           cf_auth: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          prefixes: |
-            ${{ secrets.CF_PURGE_PREFIX }}
