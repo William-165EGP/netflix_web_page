@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Purge cache from Cloudflare by URL prefix
-        uses: nathanvaughn/cloudflare-purge@v3
+        uses: nathanvaughn/actions-cloudflare-purge@master
         with:
           zone: ${{ secrets.CLOUDFLARE_ZONE_ID }}
           token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
