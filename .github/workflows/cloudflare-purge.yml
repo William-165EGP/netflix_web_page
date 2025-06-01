@@ -1,0 +1,20 @@
+name: Purge Cloudflare Cache
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  purge:
+    name: Purge Cloudflare Edge Cache
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Purge cache from Cloudflare by URL prefix
+        uses: nathanvaughn/actions-cloudflare-purge@v3
+        with:
+          zone: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          prefixes: |
+            ${{ secrets.CF_PURGE_PREFIX }}
